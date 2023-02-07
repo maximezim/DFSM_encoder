@@ -1,9 +1,9 @@
 public class Transitions {
-    private char initState;
-    private char finState;
-    private char symbol;
+    private String initState;
+    private String finState;
+    private String symbol;
 
-    public Transitions(char initState, char finState, char symbol) {
+    public Transitions(String initState, String finState, String symbol) {
         this.initState = initState;
         this.finState = finState;
         this.symbol = symbol;
@@ -12,29 +12,27 @@ public class Transitions {
     public Transitions() {
     }
 
-    // getters and setters
-
-    public char getInitState() {
+    public String getInitState() {
         return initState;
     }
 
-    public void setInitState(char initState) {
-        this.initState = initState;
-    }
-
-    public char getFinState() {
+    public String getFinState() {
         return finState;
     }
 
-    public void setFinState(char finState) {
-        this.finState = finState;
-    }
-
-    public char getSymbol() {
+    public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(char symbol) {
+    public void setInitState(String initState) {
+        this.initState = initState;
+    }
+
+    public void setFinState(String finState) {
+        this.finState = finState;
+    }
+
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 

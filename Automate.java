@@ -102,5 +102,22 @@ public class Automate {
         return ' ';
     }
 
+    public boolean isFinalState(char state) {
+        for (int i = 0; i < finalStates.length; i++) {
+            if (finalStates[i] == state) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
 
+class test {
+    public static void main(String[] args) {
+        char[] alphabet = {'a', 'b'};
+        char[] finalStates = {'q'};
+        Transitions[] transitions = {new Transitions('q0', 'q1', 'a'), new Transitions('q1', 'q2', 'b')};
+        Automate automate = new Automate('q0', finalStates, transitions, alphabet);
+        System.out.println(automate.appartient("ab"));
+    }
 }
