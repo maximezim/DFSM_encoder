@@ -1,9 +1,9 @@
 public class Transitions {
     private String initState;
     private String finState;
-    private String symbol;
+    private char symbol;
 
-    public Transitions(String initState, String finState, String symbol) {
+    public Transitions(String initState, String finState, char symbol) {
         this.initState = initState;
         this.finState = finState;
         this.symbol = symbol;
@@ -20,7 +20,7 @@ public class Transitions {
         return finState;
     }
 
-    public String getSymbol() {
+    public char getSymbol() {
         return symbol;
     }
 
@@ -32,7 +32,7 @@ public class Transitions {
         this.finState = finState;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 
