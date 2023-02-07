@@ -15,17 +15,16 @@ public class Automate {
     }
 
     public boolean appartient(String mot){
-        // indique si le mot appartient à l'automate
-        // indique la raison si ce n'est pas le cas:
-        // (symbole n’appartenant pas à l’alphabet de l’automate ; absence de transition à partir de l’état courant avec le symbole lu ; fin du mot avant d’atteindre un état final
-        
         char[] motChar = mot.toCharArray();
         String etatCourant = initialState;
         boolean appartient = false;
         boolean fin = false;
         int i = 0;
+
+        // tant que le mot n'est pas fini et qu'on a pas trouvé de transition
         while(!fin){
             if(i == motChar.length){
+                // on vérifie si l'état courant est un état final
                 fin = true;
                 for(int j = 0; j < finalStates.length; j++){
                     if(etatCourant.equals(finalStates[j])){
@@ -33,9 +32,11 @@ public class Automate {
                     }
                 }
             }else{
+                // on cherche une transition à partir de l'état courant avec le symbole lu
                 boolean transitionTrouvee = false;
                 int j = 0;
                 while(!transitionTrouvee && j < transitions.length){
+                    // si on trouve une transition, on change l'état courant
                     if(etatCourant.equals(transitions[j].getInitState()) && motChar[i] == transitions[j].getSymbol()){
                         etatCourant = transitions[j].getFinState();
                         transitionTrouvee = true;
@@ -43,6 +44,7 @@ public class Automate {
                     j++;
                 }
                 if(!transitionTrouvee){
+                    // si on ne trouve pas de transition, on arrête la boucle
                     fin = true;
                     System.out.println("absence de transition à partir de l’état courant avec le symbole lu");
                 }
