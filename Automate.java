@@ -17,6 +17,28 @@ public class Automate {
     // public boolean appartient (String mot); 
     // //returns true if the word is recognized
     // // it must return the reason why the word is not recognized
+    // symbole n’appartenant pas à l’alphabet de l’automate ; absence de transition à partir de l’état courant avec le symbole lu ; fin du mot avant d’atteindre un état fina
+
+    public boolean appartient(String mot) {
+        char state = initialState;
+        for (int i = 0; i < mot.length(); i++) {
+            char symbol = mot.charAt(i);
+            if (!isInAlphabet(symbol)) {
+                System.out.println("Le symbole " + symbol + " n'appartient pas à l'alphabet de l'automate");
+                return false;
+            }
+            if (!isInTransitions(state, symbol)) {
+                System.out.println("Absence de transition depuis l'état " + state + "avec le symbole : " + symbol);
+                return false;
+            }
+            state = nextState(state, symbol);
+        }
+        if (!isFinalState(state)) {
+            System.out.println("Le mot se finit avant d'atteindre un état final");
+            return false;
+        }
+        return true;
+    }
 
     // public Automate(String nomDeFichier); //constructor based on a file
 
@@ -53,5 +75,32 @@ public class Automate {
     public void setAlphabet(char[] alphabet) {
         this.alphabet = alphabet;
     }
+
+    public boolean isInAlphabet(char symbol) {
+        for (int i = 0; i < alphabet.length; i++) {
+            if (alphabet[i] == symbol) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isInTransitions(char state, char symbol) {
+        for (int i = 0; i < transitions.length; i++) {
+            if (transitions[i].getFinState() == state && transitions[i].getSymbol() == symbol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public char nextState(char state, char symbol) {
+        for (int i = 0; i < transitions.length; i++) {
+            if (transitions[i].getFinState() == state && transitions[i].getSymbol() == symbol) {
+                return transitions[i].getFinState();
+            }
+        }
+        return ' ';
+    }
+
 
 }
