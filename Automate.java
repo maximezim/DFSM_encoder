@@ -37,9 +37,7 @@ public class Automate {
         char [] fichierTab = new char[(int) doc.length()];
         freader.read(fichierTab);
         freader.close();
-
         String fichierString = new String(fichierTab);
-
         String[] lines = fichierString.split("\n");
         int cpt = 0;
 
@@ -65,21 +63,21 @@ public class Automate {
                         String etatFin = new String();
                         char symbol = ' ';
 
-                        for (char j : line.toCharArray()) {
+                        for (char caract : line.toCharArray()) {
                             
-                            if (j == ' ' || j == '\r') cpt1++;
+                            if (caract == ' ' || caract == '\r') cpt1++;
                             else {
                                 switch(cpt1) {
                                     case 1:
-                                        etatInit += j;
+                                        etatInit += caract;
                                         break;
 
                                     case 2:
-                                        symbol = j;
+                                        symbol = caract;
                                         break;
 
                                     case 3:
-                                        etatFin += j;
+                                        etatFin += caract;
                                         break;
 
                                     default:

@@ -10,6 +10,6 @@ q0
 # etats finaux
 q2
 # transitions
-q0 a q1
-q1 a q2
-q0 b q2
+q0 b q1
+q1 a q1
+q1 b q2

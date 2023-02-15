@@ -1,15 +1,20 @@
 # alphabet
 a
 b
+c
 # etats
 q0
 q1
 q2
+q3
 # etat initial
 q0
 # etats finaux
-q2
+q1
+q3
 # transitions
-q0 a q1
-q1 a q2
+q0 c q1
+q1 a q1
 q0 b q2
+q2 a q2
+q2 b q3
