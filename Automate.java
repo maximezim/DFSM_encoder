@@ -20,80 +20,6 @@ public class Automate {
         this.alphabet = alphabet;
     }
 
-    
-    public boolean appartient(String mot){
-        String etat = initialState;
-        // return true if the word is accepted by the automaton
-        //return false otherwise
-        // si c'est faux, donner la raison:
-        // symbole n’appartenant pas à l’alphabet de l’automate ; absence de transition à partir de l’état courant avec le symbole lu ; fin du mot avant d’atteindre un état final
-        boolean appartient = false;
-        boolean fin = false;
-        int i = 0;
-        while(!fin){
-            if(i == mot.length()){
-                fin = true;
-                System.out.println(etat);
-                // System.out.println(isInFinalStates(etat));
-                if(isInFinalStates(etat)) appartient = true;
-                else System.out.println("fin du mot avant d’atteindre un état final");
-            }
-            else{
-                char val = mot.charAt(i);
-                System.out.println("val :"+val);
-                if(isInAlphabet(val)){
-                    System.out.println("etat courant:" + etat + " symbole lu: " + val);
-                    if(isInTransitions(etat, val)){
-                        etat = getFinState(etat, val);
-                        // System.out.println("nouvel etat: " + etat + "\n");
-                        // sysout de la transition
-                        // System.out.println("transition: " + etat + " -> " + mot.charAt(i) + " -> " + getFinState(etat, mot.charAt(i)) + "\n");
-                        // si ce n'est pas l'état final, on enlève le dernier caractère de l'état
-                        // etat = etat.substring(0, etat.length() - 1);
-                        i++;
-                    }
-                    else{
-                        fin = true;
-                        System.out.println("absence de transition à partir de l’état courant avec le symbole lu");
-                    }
-                }
-                else{
-                    fin = true;
-                    System.out.println("symbole n’appartenant pas à l’alphabet de l’automate");
-                }
-            }
-        }
-        return appartient;
-    }
-
-    public boolean isInAlphabet(char c) {
-        for (int i = 0; i < alphabet.size(); i++) {
-            if (alphabet.get(i) == c) return true;
-        }
-        return false;
-    }
-
-    public boolean isInTransitions(String s, char c) {
-        for (int i = 0; i < transitions.size(); i++) {
-            if (transitions.get(i).getInitState().equals(s) && transitions.get(i).getSymbol() == c) return true;
-        }
-        return false;
-    }
-
-    public boolean isInFinalStates(String s) {
-        for (String elem : finalStates) {
-            if (elem.equals(s)) return true;
-        }
-        return false;
-    }
-
-    public String getFinState(String s, char c) {
-        for (int i = 0; i < transitions.size(); i++) {
-            if (transitions.get(i).getInitState().equals(s) && transitions.get(i).getSymbol() == c) return transitions.get(i).getFinState();
-        }
-        return null;
-    }
-
     public Automate(String nomDeFichier) throws IOException {
         finalStates = new ArrayList<String>();
         transitions = new ArrayList<Transitions>();
@@ -102,11 +28,11 @@ public class Automate {
         File doc = new File(nomDeFichier);
         doc.createNewFile();
         FileReader freader = new FileReader(doc);
-        char [] i = new char[(int) doc.length()];
-        freader.read(i);
+        char [] fichierTab = new char[(int) doc.length()];
+        freader.read(fichierTab);
         freader.close();
 
-        String fichierString = new String(i);
+        String fichierString = new String(fichierTab);
 
         String[] lines = fichierString.split("\n");
         int cpt = 0;
@@ -164,8 +90,10 @@ public class Automate {
             }
         }
     }
-
+    
     // getters and setters
+
+    // initial state
     public String getInitialState() {
         return initialState;
     }
@@ -174,6 +102,8 @@ public class Automate {
         this.initialState = initialState;
     }
 
+
+    // final states
     public ArrayList<String> getFinalStates() {
         return finalStates;
     }
@@ -182,6 +112,8 @@ public class Automate {
         this.finalStates = finalStates;
     }
 
+
+    // transitions
     public ArrayList<Transitions> getTransitions() {
         return transitions;
     }
@@ -190,6 +122,8 @@ public class Automate {
         this.transitions = transitions;
     }
 
+
+    // alphabet
     public ArrayList<Character> getAlphabet() {
         return alphabet;
     }
@@ -198,15 +132,102 @@ public class Automate {
         this.alphabet = alphabet;
     }
 
+    //--------------------------------------------------------------
+
+    // methods
+
+    // vérifie si les caractères sont dans l'alphabet
+    public boolean isInAlphabet(char c) {
+        for (int i = 0; i < alphabet.size(); i++) {
+            if (alphabet.get(i) == c) return true;
+        }
+        return false;
+    }
+
+    // vérifie si la transition est dans la liste des transitions
+    public boolean isInTransitions(String s, char c) {
+        for (int i = 0; i < transitions.size(); i++) {
+            if (transitions.get(i).getInitState().equals(s) && transitions.get(i).getSymbol() == c) return true;
+        }
+        return false;
+    }
+
+    // vérifie si l'état est dans la liste des états finaux
+    public boolean isInFinalStates(String s) {
+        for (String elem : finalStates) {
+            if (elem.equals(s)) return true;
+        }
+        return false;
+    }
+
+    // retourne l'état final de la transition
+    public String getFinState(String s, char c) {
+        for (int i = 0; i < transitions.size(); i++) {
+            if (transitions.get(i).getInitState().equals(s) && transitions.get(i).getSymbol() == c) return transitions.get(i).getFinState();
+        }
+        return null;
+    }
+
+    // vérifie si le mot est accepté par l'automate. Si non, donne la raison :
+    //   - symbole n’appartenant pas à l’alphabet de l’automate
+    //   - absence de transition à partir de l’état courant avec le symbole lu
+    //   - fin du mot avant d’atteindre un état final
+    public boolean appartient(String mot){
+        String etat = initialState;
+        boolean appartient = false;
+        boolean fin = false;
+        int i = 0;
+        while(!fin){
+            if(i == mot.length()){
+                fin = true;
+                // System.out.println("Etat à la fin du mot : " + etat);
+                if(isInFinalStates(etat)) appartient = true;
+                else System.err.println("fin du mot avant d'atteindre un état final");
+            }
+            else{
+                char val = mot.charAt(i);
+                if(isInAlphabet(val)){
+                    // System.out.println("etat courant : " + etat + "\nsymbole lu : " + val + "\n");
+                    if(isInTransitions(etat, val)){
+                        etat = getFinState(etat, val);
+                        i++;
+                    }
+                    else{
+                        fin = true;
+                        System.err.println("absence de transition à partir de l'état courant avec le symbole lu");
+                    }
+                }
+                else{
+                    fin = true;
+                    System.err.println("symbole n'appartenant pas à l'alphabet de l'automate");
+                }
+            }
+        }
+        return appartient;
+    }
+
+    // affiche l'automate
+    public void affiche(){
+        System.out.print("alphabet : {" + alphabet.get(0));
+        for (int i = 1; i < alphabet.size(); i++) {
+            System.out.print(", " + alphabet.get(i));
+        }
+        System.out.print("}\n");
+        System.out.println("\nétat initial : " + initialState);
+        System.out.println("\nétats finaux : " + finalStates.get(0));
+        for (int i = 1; i < finalStates.size(); i++) {
+            System.out.print(", " + finalStates.get(i));
+        }
+        System.out.println("\ntransitions : ");
+        for (int i = 0; i < transitions.size(); i++) {
+            System.out.println(transitions.get(i));
+        }
+        System.out.print("\n");
+    }
 
     public static void main(String[] args) throws IOException {
         Automate a = new Automate("automate1.txt");
-        System.out.println("Etat initial: " + a.getInitialState());
-        ArrayList<String> finalStates = a.getFinalStates();
-        for (String s : finalStates) {
-            System.out.println("Etat final: " + s);
-        }
-
+        a.affiche();
         System.out.println(a.appartient("ab"));
     }
 } 
