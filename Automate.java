@@ -7,12 +7,17 @@ public class Automate {
     private ArrayList<Transitions> transitions;
     private ArrayList<Character> alphabet;
 
+
+    // Constructeurs
+
+    // constructeur par défaut
     public Automate() {
         this.finalStates = new ArrayList<>();
         this.transitions = new ArrayList<>();
         this.alphabet = new ArrayList<>();
     }
 
+    // constructeur avec paramètres
     public Automate(String initialState, ArrayList<String> finalStates, ArrayList<Transitions> transitions, ArrayList<Character> alphabet) {
         this.initialState = initialState;
         this.finalStates = finalStates;
@@ -20,6 +25,7 @@ public class Automate {
         this.alphabet = alphabet;
     }
 
+    // constructeur à partir d'un fichier
     public Automate(String nomDeFichier) throws IOException {
         finalStates = new ArrayList<String>();
         transitions = new ArrayList<Transitions>();
@@ -91,7 +97,9 @@ public class Automate {
         }
     }
     
-    // getters and setters
+    //--------------------------------------------------------------
+
+    // Getters and setters
 
     // initial state
     public String getInitialState() {
@@ -134,7 +142,7 @@ public class Automate {
 
     //--------------------------------------------------------------
 
-    // methods
+    // Methods
 
     // vérifie si les caractères sont dans l'alphabet
     public boolean isInAlphabet(char c) {
@@ -223,11 +231,5 @@ public class Automate {
             System.out.println(transitions.get(i));
         }
         System.out.print("\n");
-    }
-
-    public static void main(String[] args) throws IOException {
-        Automate a = new Automate("distributeur.txt");
-        a.affiche();
-        System.out.println(a.appartient("5S5s"));
     }
 } 
