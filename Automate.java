@@ -226,8 +226,8 @@ public class Automate {
     }
 
     public static void main(String[] args) throws IOException {
-        Automate a = new Automate("automate1.txt");
+        Automate a = new Automate("distributeur.txt");
         a.affiche();
-        System.out.println(a.appartient("ab"));
+        System.out.println(a.appartient("5S5s"));
     }
 } 
