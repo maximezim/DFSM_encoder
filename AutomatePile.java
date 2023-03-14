@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class AutomatePile extends Automate{
     private ArrayList<TransitionsPile> transitionsPile;
     private Pile pile;
@@ -45,23 +47,41 @@ public class AutomatePile extends Automate{
             if(i == mot.length()){
                 fin = true;
                 if(isInFinalStates(etat)){
-                    appartient = true;
+                    if (pile.isEmpty()) {
+                        appartient = true;
+                    }
+                    else {
+                        System.out.println("Pile non vide");
+                    }
+                }else{
+                    System.out.println("\nEtat final non atteint");
                 }
             }else{
                 if(isInTransitions(etat, mot.charAt(i))){
                     for (int j = 0; j < transitionsPile.size(); j++) {
                         if(transitionsPile.get(j).getInitState().equals(etat) && transitionsPile.get(j).getSymbol() == mot.charAt(i)){
                             etat = transitionsPile.get(j).getFinState();
-                            if(transitionsPile.get(j).getPile() != null){
-                                pile.push(transitionsPile.get(j).getPile());
-                            }else{
-                                pile.pop();
+                            if (transitionsPile.get(j).getPrecedent() != null) {
+                                if (!pile.isEmpty()){
+                                    if (pile.peek() == transitionsPile.get(j).getPrecedent()) {
+                                        pile.pop();
+                                    }
+                                }
+                                else {
+                                    System.out.println("\nPile non conforme");
+                                    fin = true;
+                                }
                             }
+                            else {
+                                pile.push(transitionsPile.get(j).getPile());
+                            }
+
                         }
                     }
                     i++;
                 }else{
                     fin = true;
+                    System.out.println("\nTransition non existante");
                 }
             }
         }
@@ -84,14 +104,13 @@ class Essai{
         automatePile.setFinalStates(finalStates);
 
         ArrayList<TransitionsPile> transitions = new ArrayList<TransitionsPile>();
-        transitions.add(new TransitionsPile("q0", "q0", 'a', 'A'));
-        transitions.add(new TransitionsPile("q0", "q1", 'b', null));
-
+        transitions.add(new TransitionsPile("q0", "q0", 'a', null, 'a'));
+        transitions.add(new TransitionsPile("q0", "q1", 'b', 'a', null));
+        transitions.add(new TransitionsPile("q1", "q1", 'a', 'a', null));
         automatePile.setTransitionsPile(transitions);
 
         System.out.println("ab appartient ? : " + automatePile.appartient("ab"));
         System.out.println("aa appartient ? : " + automatePile.appartient("aa"));
-
-
+        System.out.println("aba appartient ? : " + automatePile.appartient("aba"));
     }
 }
