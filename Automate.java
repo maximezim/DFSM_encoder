@@ -2,10 +2,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Automate {
-    private String initialState; 
-    private ArrayList<String> finalStates;
-    private ArrayList<Transitions> transitions;
-    private ArrayList<Character> alphabet;
+    protected String initialState; 
+    protected ArrayList<String> finalStates;
+    protected ArrayList<Transitions> transitions;
+    protected ArrayList<Character> alphabet;
 
 
     // Constructeurs

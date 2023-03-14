@@ -1,41 +1,59 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Pile {
-    // Représente une pile de caractères pour l'automate à pile
-    private ArrayList<Character> pile;
+    private Stack<Character> pile;
+    private ArrayList<Character> alphabetPile;
 
     public Pile() {
-        this.pile = new ArrayList<Character>();
+        this.pile = new Stack<Character>();
+        this.alphabetPile = new ArrayList<Character>();
     }
 
-    public Pile(ArrayList<Character> pile) {
+    public Pile(Stack<Character> pile, ArrayList<Character> alphabetPile) {
         this.pile = pile;
+        this.alphabetPile = alphabetPile;
     }
 
     public void push(char symbol) {
-        pile.add(symbol);
+        pile.push(symbol);
     }
 
     public char pop() {
-        char symbol = pile.get(pile.size() - 1);
-        pile.remove(pile.size() - 1);
-        return symbol;
+        return pile.pop();
     }
 
     public char peek() {
-        return pile.get(pile.size() - 1);
+        return pile.peek();
     }
 
     public boolean isEmpty() {
         return pile.isEmpty();
     }
 
-    public ArrayList<Character> getPile() {
+    public Stack<Character> getPile() {
         return pile;
     }
 
-    public void setPile(ArrayList<Character> pile) {
+    public void setPile (Stack<Character> pile) {
         this.pile = pile;
+    }
+
+    public ArrayList<Character> getAlphabetPile() {
+        return alphabetPile;
+    }
+
+    public void setAlphabetPile(ArrayList<Character> alphabetPile) {
+        this.alphabetPile = alphabetPile;
+    }
+
+    public boolean isInAlphabetPile(char symbol) {
+        for (int i = 0; i < alphabetPile.size(); i++) {
+            if (alphabetPile.get(i) == symbol) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

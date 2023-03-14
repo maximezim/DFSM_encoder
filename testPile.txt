@@ -1,0 +1,18 @@
+# alphabet
+a
+b
+# alphabetPile
+Z
+X
+# etats
+q0
+q1
+q2
+# etat initial
+q0
+# etats finaux
+q2
+# transitions
+q0 a,Z -> X q1
+q1 a,X -> X q2
+q2 b,X -> _ q2
