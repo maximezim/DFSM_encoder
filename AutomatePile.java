@@ -200,7 +200,7 @@ class Essai{
         ArrayList<TransitionsPile> transitions = new ArrayList<TransitionsPile>();
         transitions.add(new TransitionsPile("q0", "q1", 'a', 'Z', "A"));
         transitions.add(new TransitionsPile("q1", "q1", 'b', 'A', "e"));
-        transitions.add(new TransitionsPile("q1", "q1", 'a', 'Z', "e"));
+        transitions.add(new TransitionsPile("q1", "q1", 'a', 'A', "e"));
 
         automatePile.setTransitionsPile(transitions);
 
