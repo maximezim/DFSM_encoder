@@ -1,14 +1,14 @@
 public class TransitionsPile extends Transitions {
-    private Character pile;
+    private String pile = "";
     private Character precedent;
 
-    public TransitionsPile(String initState, String finState, char symbol, Character precedent, Character pile) {
+    public TransitionsPile(String initState, String finState, char symbol, Character precedent, String pile) {
         super(initState, finState, symbol);
         this.pile = pile;
         this.precedent = precedent;
     }
 
-    public Character getPile () {
+    public String getPile () {
         return pile;
     }
 

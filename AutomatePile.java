@@ -1,6 +1,7 @@
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.lang.model.util.ElementScanner14;
 
 public class AutomatePile extends Automate{
     private ArrayList<TransitionsPile> transitionsPile;
@@ -61,7 +62,7 @@ public class AutomatePile extends Automate{
                     for (int j = 0; j < transitionsPile.size(); j++) {
                         if(transitionsPile.get(j).getInitState().equals(etat) && transitionsPile.get(j).getSymbol() == mot.charAt(i)){
                             etat = transitionsPile.get(j).getFinState();
-                            if (transitionsPile.get(j).getPrecedent() != null) {
+                            if (transitionsPile.get(j).getPrecedent() != 'Z') {
                                 if (!pile.isEmpty()){
                                     if (pile.peek() == transitionsPile.get(j).getPrecedent()) {
                                         pile.pop();
@@ -73,7 +74,10 @@ public class AutomatePile extends Automate{
                                 }
                             }
                             else {
-                                pile.push(transitionsPile.get(j).getPile());
+                                for (char c : transitionsPile.get(j).getPile().toCharArray()) {
+                                    if (c != 'Z' && c != 'e')
+                                    pile.push(c);
+                                }
                             }
 
                         }
@@ -86,6 +90,96 @@ public class AutomatePile extends Automate{
             }
         }
         return appartient;
+    }
+
+    public AutomatePile(String nomDeFichier) throws IOException {
+        finalStates = new ArrayList<String>();
+        transitionsPile = new ArrayList<TransitionsPile>();
+        alphabet = new ArrayList<Character>();    
+        ArrayList<Character> alphabetPile = new ArrayList<Character>();
+        pile = new Pile();
+                      
+        File doc = new File(nomDeFichier);
+        doc.createNewFile();
+        FileReader freader = new FileReader(doc);
+        char [] fichierTab = new char[(int) doc.length()];
+        freader.read(fichierTab);
+        freader.close();
+        String fichierString = new String(fichierTab);
+        String[] lines = fichierString.split("\n");
+        int cpt = 0;
+
+        for (String line : lines) {
+            if(line.contains("#")) cpt++;
+            else {
+                switch(cpt) {
+                    case 1:
+                        alphabet.add(line.charAt(0));
+                        break; 
+                        
+                    case 2:
+                        alphabetPile.add(line.charAt(0));
+                        break;
+
+                    case 4:
+                        initialState = line.substring(0, line.length() - 1);
+                        break;
+
+                    case 5:
+                        finalStates.add(line.substring(0, line.length() - 1));
+                        break;
+
+                    case 6:
+                        pile.push(line.charAt(0));
+                        break;
+
+                    case 7:
+                        int cpt1 = 1;
+                        String etatInit = new String();
+                        String etatFin = new String();
+                        char symbol = ' ';
+                        char pileInit = ' ';
+                        String pileFin = new String();
+
+                        for (char caract : line.toCharArray()) {
+                            
+                            if (caract == ' ' || caract == '\r' || caract == ',') cpt1++;
+                            else {
+                                switch(cpt1) {
+                                    case 1:
+                                        etatInit += caract;
+                                        break;
+
+                                    case 2:
+                                        symbol = caract;
+                                        break;
+
+                                    case 3:
+                                        pileInit = caract;
+                                        break;
+
+                                    case 5:
+                                        pileFin += caract;
+                                        break;
+
+                                    case 6:
+                                        etatFin += caract;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        pile.setAlphabetPile(alphabetPile);
+                        transitionsPile.add(new TransitionsPile(etatInit, etatFin, symbol, pileInit, pileFin));
+                        break;
+
+                    default:
+                        break;
+                }  
+            }
+        }
     }
 
     public void setTransitionsPile(ArrayList<TransitionsPile> transitionsPile) {
@@ -104,9 +198,10 @@ class Essai{
         automatePile.setFinalStates(finalStates);
 
         ArrayList<TransitionsPile> transitions = new ArrayList<TransitionsPile>();
-        transitions.add(new TransitionsPile("q0", "q0", 'a', null, 'a'));
-        transitions.add(new TransitionsPile("q0", "q1", 'b', 'a', null));
-        transitions.add(new TransitionsPile("q1", "q1", 'a', 'a', null));
+        transitions.add(new TransitionsPile("q0", "q1", 'a', 'Z', "A"));
+        transitions.add(new TransitionsPile("q1", "q1", 'b', 'A', "e"));
+        transitions.add(new TransitionsPile("q1", "q1", 'a', 'Z', "e"));
+
         automatePile.setTransitionsPile(transitions);
 
         System.out.println("ab appartient ? : " + automatePile.appartient("ab"));
